@@ -147,7 +147,7 @@ public class JerryManderin : MonoBehaviour
                     var from = mapGoToNode[currentPiece];
                     var to = mapGoToNode[hitTo];
                     Debug.Log("swap: " + from.type + " to " + to.type);
-                    if(from.height == to.height && from != to && from.type != to.type)
+                    if(from.height == to.height && from != to && from.type != to.type && from.column != to.column)
                     {
                         //Swap gameobjects
                         var t = currentPiece.transform.position;
@@ -164,8 +164,7 @@ public class JerryManderin : MonoBehaviour
 
                         Debug.Log("after swap " + from.type + " to " + to.type);
                         moves--;
-                        this.movetext.GetComponent<TextMesh>().text = "Siirtoja\n" + moves + "/10";
-
+                        
                         //Animate from & to
                         from.gameobject.GetComponent<BoxAnimator>().animateOutIn(0.0f);
                         to.gameobject.GetComponent<BoxAnimator>().animateOutIn(0.0f);
