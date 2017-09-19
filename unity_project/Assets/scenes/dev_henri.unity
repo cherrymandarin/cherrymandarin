@@ -202,6 +202,28 @@ GameObject:
   m_PrefabParentObject: {fileID: 1157524046415178, guid: 532c33d030cd1ab448d5340f01f998e3,
     type: 2}
   m_PrefabInternal: {fileID: 2143401473}
+--- !u!114 &1355017277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1355017276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 052c3764c672d8c4fab0607e60aab95f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WIDTH: 8
+  HEIGHT: 8
+  symbols:
+  - {fileID: 1456612451370990, guid: 7ebfe221d5189da4687f796cedef43cc, type: 2}
+  - {fileID: 1694062342313312, guid: 5343ebc038d6d454db82a26e0378724d, type: 2}
+  - {fileID: 1609578697552688, guid: 57c204b12606d2e4ea3a793b8f5777dc, type: 2}
+  - {fileID: 1559288729633260, guid: 4abd4b4bb3bd49049a56ea210fd64ae0, type: 2}
+  - {fileID: 1855293431726678, guid: e7f9e3f4460b8cb48a4060fc9c92f30c, type: 2}
+  - {fileID: 1154293961354120, guid: 78b73b6d3e7f60048b578cd947e5386d, type: 2}
+  moves: 20
+  movesLeft: 20
 --- !u!1 &1604373033
 GameObject:
   m_ObjectHideFlags: 0
