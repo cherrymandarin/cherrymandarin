@@ -133,6 +133,9 @@ MonoBehaviour:
   - {fileID: 1892576247446780, guid: b66ac72c78901ba4ba32f8bc91526114, type: 2}
   - {fileID: 1283433066449326, guid: f66f92bdae5ab6e41a127a3956c60aca, type: 2}
   - {fileID: 1627793450184516, guid: a6b6dd674224c2c45b30690a18565fc9, type: 2}
+  includeLayers:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!4 &5059507
 Transform:
   m_ObjectHideFlags: 0
