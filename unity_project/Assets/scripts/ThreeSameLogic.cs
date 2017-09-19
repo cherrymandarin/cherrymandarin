@@ -9,6 +9,7 @@ public class ThreeSameLogic : MonoBehaviour {
         public int x;
         public int y;
         public int type;
+        public GameObject go;
     }
     public List<List<Node>> grid;
     public List<Node> nodes;
