@@ -6,6 +6,8 @@ public class JerryManderin : MonoBehaviour
 {
     public int moves = 10;
 
+    public GameObject movetext;
+
     public List<GameObject> love_group;
     public List<GameObject> hate_group;
     public List<GameObject> neutral_group;
@@ -130,7 +132,7 @@ public class JerryManderin : MonoBehaviour
                 {
                     this.currentPiece = hit.transform.parent.gameObject;
                     var n = mapGoToNode[this.currentPiece];
-
+                    Debug.Log("selected: " + n.type);
                     foreach (JerryLogic.JerryNode node in logic.nodes)
                     {
                         if (node.height == n.height && node.type != n.type && node.column != n.column || node == n)
@@ -144,7 +146,8 @@ public class JerryManderin : MonoBehaviour
                     var hitTo = hit.transform.parent.gameObject;
                     var from = mapGoToNode[currentPiece];
                     var to = mapGoToNode[hitTo];
-                    if(from.height == to.height)
+                    Debug.Log("swap: " + from.type + " to " + to.type);
+                    if(from.height == to.height && from != to && from.type != to.type)
                     {
                         //Swap gameobjects
                         var t = currentPiece.transform.position;
@@ -156,12 +159,24 @@ public class JerryManderin : MonoBehaviour
                         from.type = to.type;
                         to.type = tt;
 
+                        mapGoToNode[currentPiece] = to;
+                        mapGoToNode[hitTo] = from;
+
+                        Debug.Log("after swap " + from.type + " to " + to.type);
+                        moves--;
+                        this.movetext.GetComponent<TextMesh>().text = "Siirtoja\n" + moves + "/10";
+
+                        //Animate from & to
+                        from.gameobject.GetComponent<BoxAnimator>().animateOutIn(0.0f);
+                        to.gameobject.GetComponent<BoxAnimator>().animateOutIn(0.0f);
                     }
                     currentPiece = null;
                     foreach (JerryLogic.JerryNode node in logic.nodes)
                     {
                         node.gameobject.GetComponent<BoxAnimator>().animateDefault();
                     }
+
+                   
                 }
             }
            

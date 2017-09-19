@@ -134,3 +134,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e91283c4746d43841a2ea9bbd45e7b7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inOut:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: -0.0014648438
+      value: 1.0053711
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.061512947
+      value: 0.9995568
+      inSlope: -0.123381615
+      outSlope: -0.123381615
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.4804001
+      value: -0.0019390816
+      inSlope: 1.386172
+      outSlope: 1.386172
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1.000386
+      value: 0.99993515
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
