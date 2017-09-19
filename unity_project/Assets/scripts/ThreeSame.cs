@@ -12,8 +12,9 @@ public class ThreeSame : MonoBehaviour {
         this.logic = this.GetComponent<ThreeSameLogic>();
         foreach(ThreeSameLogic.Node node in logic.nodes)
         {
-            Instantiate(this.logic.symbols[node.type], new Vector3(node.x, node.y, 0f), Quaternion.identity, this.transform);
+            Instantiate(this.logic.symbols[node.type], new Vector3(node.x*1.1f, node.y*1.1f, 0f), Quaternion.identity, this.transform);
         }
+        this.transform.position = new Vector3(-7f, -4f, 0f);
 	}
     
 	// Update is called once per frame
