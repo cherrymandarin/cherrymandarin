@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33856331991496744}
   - component: {fileID: 65301046621033052}
   - component: {fileID: 23420120435957976}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4032558982527286}
-  m_Layer: 0
+  - component: {fileID: 114741987104330534}
+  m_Layer: 8
   m_Name: block1_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,7 +67,7 @@ Transform:
   m_GameObject: {fileID: 1026553970741252}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 4, z: 1}
+  m_LocalScale: {x: 1, y: 4.3, z: 1}
   m_Children: []
   m_Father: {fileID: 4032558982527286}
   m_RootOrder: 0
@@ -84,7 +85,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 865332675a7f91247b4b875d8913220e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -101,6 +102,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33856331991496744
 MeshFilter:
@@ -121,3 +123,14 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114741987104330534
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1663211537546948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e91283c4746d43841a2ea9bbd45e7b7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -7,6 +7,8 @@ public class Main : MonoBehaviour {
     public GameObject threesame;
     public GameObject jerrymandarin;
 
+    
+
 	// Use this for initialization
 	void Start () {
 		
@@ -16,4 +18,14 @@ public class Main : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void moveToThreeSame(int lovePoints, int hatePoints, int neutralPoints, int draws)
+    {
+
+    }
+
+    public void moveToJerryManderin()
+    {
+
+    }
 }
