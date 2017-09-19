@@ -21,7 +21,7 @@ public class BoxAnimator : MonoBehaviour {
     private void Awake()
     {
         box = this.transform.GetChild(0).gameObject;
-        origCol = this.GetComponentInChildren<Renderer>().material.color;
+        //origCol = this.GetComponentInChildren<Renderer>().material.color;
     }
 
     // Update is called once per frame
@@ -42,9 +42,11 @@ public class BoxAnimator : MonoBehaviour {
         //   this.GetComponentInChildren<Renderer>().material.SetFloat("Metallic", (size + 0.18f));
         var mp =Mathf.Min(1, (size + 0.1f));
         mp *= mp;
-        
-        this.GetComponentInChildren<Renderer>().material.color = new Color(origCol.r*mp, origCol.g * mp, origCol.b * mp, 1f);
-	}
+
+        //this.GetComponentInChildren<Renderer>().material.color = new Color(origCol.r*mp, origCol.g * mp, origCol.b * mp, 1f);
+        float dance = Mathf.Max(0f,size - 0.9f);
+        this.transform.localRotation = Quaternion.Euler(Mathf.Sin(Time.time * 5f) * dance * 75f, Mathf.Sin(Time.time * 20f) * dance * 145f,Mathf.Sin(Time.time*15f) * dance * 105f);
+ 	}
     public void animateDefault()
     {
         size = 0.9f;
