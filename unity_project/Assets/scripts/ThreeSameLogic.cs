@@ -81,55 +81,41 @@ public class ThreeSameLogic : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         this.buildGrid();
+        this.debugPrint();
         this.buildInitialConnections();
-
-	}
+        this.debugPrint();
+        this.randomizeGrid();
+        this.debugPrint();
+    }
 
     private void randomizeNoMove(Node node )
 	{
         List<int> possible = new List<int>();
-        int x = node.x;
-	    int y = node.y;
-		//Check if there's some spawn that creates now new connections.
-		for ( int i = 0; i < symbols.Count; i++)
-		{
-			int count = 0;
-            for (int j = 0; j< checklist.Length; j+=4)
-			{
-				count = 0;
-                int x1 = x + checklist[j * 4];
-                int y1 = y + checklist[j * 4 + 1];
-                int x2 = x + checklist[j * 4 + 2];
-                int y2 = y + checklist[j * 4 + 3];
-				
-                if (x1 >= 0 && x1 < WIDTH && y1 >= 0 && y1 < HEIGHT && grid[x1][y1].type == i)
-                {
-                    count++;
-                }
-                if (x2 >= 0 && x2 < WIDTH && y2 >= 0 && y2 < HEIGHT && grid[x1][y1].type == i)
-                {
-                    count++;
-                }
+        for (int i = 0; i < symbols.Count; i++) possible.Add(i);
+        if(node.x > 0)
+        {
+            if(possible.Contains(grid[node.x-1][node.y].type))
+                possible.Remove(grid[node.x - 1][node.y].type);
+        }
+        if (node.x < WIDTH-1)
+        {
+            if (possible.Contains(grid[node.x + 1][node.y].type))
+                possible.Remove(grid[node.x + 1][node.y].type);
+        }
+        if (node.y > 0)
+        {
+            if (possible.Contains(grid[node.x][node.y-1].type))
+                possible.Remove(grid[node.x][node.y-1].type);
+        }
+        if (node.y <HEIGHT-1)
+        {
+            if (possible.Contains(grid[node.x ][node.y+1].type))
+                possible.Remove(grid[node.x][node.y+1].type);
+        }
 
-                if (count == 2) break;
-			}
-			if (count< 2)
-			{
-				possible.Add(i);
-			}
-		}
-		
-		if (possible.Count == 0 ){
-            //Pick a random one
-            randomValue(node);
-		}
-		else
-		{
-            node.type = possible[Random.Range(0, possible.Count)];
-		}
-	}
-
-
+        node.type = possible[Random.Range(0, possible.Count)];
+    }
+    
     private void randomizeGrid()
 	{
         for (int x = 0; x < WIDTH; x++)
@@ -158,6 +144,7 @@ public class ThreeSameLogic : MonoBehaviour {
             for(int j = 0; j < HEIGHT;j++)
             {
                 var node = new Node();
+                node.type = -1;
                 node.x = i;
                 node.y = j;
                 this.grid[i].Add(node);
@@ -511,6 +498,20 @@ public class ThreeSameLogic : MonoBehaviour {
         return c >= 3;
 	}
 
+    private void debugPrint()
+    {
+        string s = "";
+        for(int i = 0; i < HEIGHT; i++)
+        {
+            for(int j = 0; j < WIDTH; j++)
+            {
+                s += grid[j][i].type;
+            }
+            s += "\n";
+        }
+        Debug.Log("---state---");
+        Debug.Log(s);
+    }
 
 	// Update is called once per frame
 	void Update () {
