@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074005, b: 0.35872722, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -194,6 +194,94 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 102880900999438596, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: m_Color.rgba
+      value: 4278190080
+      objectReference: {fileID: 0}
+    - target: {fileID: 102999890990460528, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: m_Color.rgba
+      value: 4281479730
+      objectReference: {fileID: 0}
+    - target: {fileID: 102999890990460528, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: m_Text
+      value: READY!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4480631339072240, guid: 851847df2e07efb4a858a175537b5ba5, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -8.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 102880900999438596, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: m_Text
+      value: "Move pieces by tapping.\n\nForm columns where\namount of orange \nsquares
+        is larger than\nred squares.\n\nThe more you have\norange ones, the better.\nGreens
+        are neutral\nand are thus better\nthan hateful red.\n\nTap ready when\nyou
+        are done."
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112484871013468, guid: 851847df2e07efb4a858a175537b5ba5, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -8.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 23388698202457744, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5123d710c3d84be48ba32831435bb3b5, type: 3}
+    - target: {fileID: 102880900999438596, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 5123d710c3d84be48ba32831435bb3b5,
+        type: 3}
+    - target: {fileID: 102880900999438596, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: m_RichText
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 102999890990460528, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 4c02ebe803adc484f9a2d3cb7d107095,
+        type: 3}
+    - target: {fileID: 23771093060157208, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4c02ebe803adc484f9a2d3cb7d107095, type: 3}
+    - target: {fileID: 4250050398857716, guid: 851847df2e07efb4a858a175537b5ba5, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 2.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 4250050398857716, guid: 851847df2e07efb4a858a175537b5ba5, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4250050398857716, guid: 851847df2e07efb4a858a175537b5ba5, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 4.294
+      objectReference: {fileID: 0}
+    - target: {fileID: 4250050398857716, guid: 851847df2e07efb4a858a175537b5ba5, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1907426565217654, guid: 851847df2e07efb4a858a175537b5ba5, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 102999890990460528, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: m_FontSize
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 102880900999438596, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: m_FontSize
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 851847df2e07efb4a858a175537b5ba5, type: 2}
   m_IsPrefabParent: 0
@@ -273,7 +361,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
