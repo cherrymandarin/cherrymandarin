@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JerryManderin : MonoBehaviour {
+public class JerryManderin : MonoBehaviour
+{
+    public int moves = 10;
 
     public List<GameObject> love_group;
     public List<GameObject> hate_group;
@@ -10,36 +12,29 @@ public class JerryManderin : MonoBehaviour {
 
     public List<GameObject> winMarkers;
 
-    private GameObject dragging;
-    private Vector2 dragstartpoint;
 
     public LayerMask includeLayers;
-    public LayerMask draggingLayer;
 
-    private Vector3 mouseDownBegin;
     private GameObject currentPiece;
-    private float currentYOff;
-
-    private enum Phase { START, END, CANCEL, UPDATE };
 
     private Dictionary<GameObject, JerryLogic.JerryNode> mapGoToNode;
 
-    
+    private enum Phase { START, END, CANCEL, UPDATE };
 
+    private GameObject startHit;
     private JerryLogic logic;
 
-    private bool hadTouch = false;
-
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         this.mapGoToNode = new Dictionary<GameObject, JerryLogic.JerryNode>();
         this.logic = this.GetComponent<JerryLogic>();
-        
-        for(int i = 0; i < logic.columns.Count; i++)
+
+        for (int i = 0; i < logic.columns.Count; i++)
         {
             var column = logic.columns[i];
             var heightOff = 0;
-            for(int j = 0; j < column.nodes.Count; j++)
+            for (int j = 0; j < column.nodes.Count; j++)
             {
                 var n = column.nodes[j];
                 GameObject prefab = null;
@@ -47,15 +42,15 @@ public class JerryManderin : MonoBehaviour {
                     prefab = love_group[n.height - 1];
                 else if (n.type == 1)
                     prefab = hate_group[n.height - 1];
-                else 
+                else
                     prefab = neutral_group[n.height - 1];
 
-                float x = i-1f;
-                float y = heightOff + n.height / 2f-4.5f;
+                float x = i*1.2f - 2.5f;
+                float y = heightOff + n.height / 2f - 4.9f;
                 float z = 0;
-                Debug.Log(x+","+ y+","+ z);
-               // n.gameobject.transform.GetChild(0).transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
-                n.gameobject = Instantiate(prefab, new Vector3(x,y,z), Quaternion.identity, this.transform);
+                
+                // n.gameobject.transform.GetChild(0).transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+                n.gameobject = Instantiate(prefab, new Vector3(x, y, z), Quaternion.identity, this.transform);
                 heightOff += n.height;
                 mapGoToNode.Add(n.gameobject, n);
             }
@@ -66,49 +61,35 @@ public class JerryManderin : MonoBehaviour {
     void Update()
     {
         //Update winning rows
-        /*
+        
         for(int i = 0; i < logic.columns.Count; i++)
         {
             var c = logic.columns[i];
-            this.winMarkers[i].transform.GetChild(0).gameObject.GetComponent<Renderer>().enabled = true;
-            this.winMarkers[i].transform.GetChild(1).gameObject.GetComponent<Renderer>().enabled = true;
-            this.winMarkers[i].transform.GetChild(2).gameObject.GetComponent<Renderer>().enabled = true;
-            this.winMarkers[i].transform.GetChild(c.winner).gameObject.GetComponent<Renderer>().enabled = true;
+            this.winMarkers[i].transform.GetChild(0).gameObject.GetComponent<Renderer>().enabled = false;
+            this.winMarkers[i].transform.GetChild(1).gameObject.GetComponent<Renderer>().enabled = false;
+            this.winMarkers[i].transform.GetChild(2).gameObject.GetComponent<Renderer>().enabled = false;
+            if(c.winner >= 0)
+                this.winMarkers[i].transform.GetChild(c.winner).gameObject.GetComponent<Renderer>().enabled = true;
         }
-        */
-        //INTERACTIONS BELOW
-        if(hadTouch && Input.touchCount == 0)
-        {
-            this.handleInteraction(Phase.END, new Vector2());
-        }
+        
+
         for (var i = 0; i < Input.touchCount; i++)
         {
-            hadTouch = true;
             //TODO - this could be updated to support multiple touches. Currently only one is supported.
             var touch = Input.GetTouch(i);
             if (touch.phase == TouchPhase.Ended)
             {
-                hadTouch = false;
                 this.handleInteraction(Phase.END, touch.position);
             }
             else if (touch.phase == TouchPhase.Began)
             {
                 this.handleInteraction(Phase.START, touch.position);
-            }/*
-            else if (touch.phase != TouchPhase.Canceled)
-            {
-                this.handleInteraction(Phase.CANCEL, touch.position);
-            }*/
-            else
-            {
-                 this.handleInteraction(Phase.UPDATE, touch.position);
             }
-
             return;
         }
 
         //Handle mouse only if no touch had been handled. Mouse is mainly for development purposes.
-        
+
         if (Input.GetMouseButtonDown(0))
         {
             this.handleInteraction(Phase.START, new Vector2(Input.mousePosition.x, Input.mousePosition.y));
@@ -117,116 +98,77 @@ public class JerryManderin : MonoBehaviour {
         {
             this.handleInteraction(Phase.END, new Vector2(Input.mousePosition.x, Input.mousePosition.y));
         }
-        else if (Input.GetMouseButton(0))
-        {
-            this.handleInteraction(Phase.UPDATE, new Vector2(Input.mousePosition.x, Input.mousePosition.y));
-        }
+
     }
 
     void handleInteraction(Phase phase, Vector2 position)
     {
-        float dx = this.mouseDownBegin.x - position.x;
-        float dy = this.mouseDownBegin.y - position.y;
         var ray = Camera.main.ScreenPointToRay(new Vector3(position.x, position.y));
         var worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, 0));
         //TODO - should this be calculated based on screen resolution instead of absolute?
-        if (phase == Phase.CANCEL)
-        {
-            for (int i = 0; i < logic.nodes.Count; i++)
-            {
-                var go = logic.nodes[i].gameobject;
-                go.GetComponent<BoxAnimator>().animateDefault();
-                go.transform.position = new Vector3(go.transform.position.x, go.transform.position.y, -0f);
-            }
-            this.currentPiece.transform.position = dragstartpoint;
-            this.currentPiece = null;
-        }
-        else if (phase == Phase.START)
+
+        if (phase == Phase.START)
         {
             //Fetch the piece being hit.
-            mouseDownBegin = position;
             var hit = checkHit(ray);
             
-            if(hit != null)
+            if (hit != null)
             {
-                this.currentPiece = checkHit(ray).transform.parent.gameObject;
-                SetLayerRecursively(this.currentPiece, (int)Mathf.Log(draggingLayer.value, 2));
-                dragstartpoint = currentPiece.transform.position;
-                currentYOff = this.currentPiece.transform.position.y;
-                currentPiece.transform.position = new Vector3(dragstartpoint.x, dragstartpoint.y, -1);
+                startHit = hit.transform.parent.gameObject;
+                startHit.GetComponent<BoxAnimator>().animateLarge();
             }
         }
-        else if (phase == Phase.END && this.currentPiece != null)
+        else if (phase == Phase.END)
         {
-            //swap pieces if possible.
-            var over = checkHit(ray);
-            if (over != null)
+            //Fetch the piece being hit.
+            var hit = checkHit(ray);
+
+            if (hit != null && hit.transform.parent.gameObject == startHit)
             {
-                over = over.transform.parent.gameObject;
-                var n = mapGoToNode[over];
-                var cur = mapGoToNode[currentPiece];
-
-                if (n.height == cur.height)
+                
+                if (currentPiece == null)
                 {
-                    //Swap gameobjects
-                    var t = over.transform.position;
-                    over.transform.position = dragstartpoint;
-                    cur.gameobject.transform.position = t;
+                    this.currentPiece = hit.transform.parent.gameObject;
+                    var n = mapGoToNode[this.currentPiece];
 
-                    //Swap node types
-                    var tt = cur.type;
-                    cur.type = n.type;
-                    n.type = tt;
-
-                    over.transform.position = new Vector3(over.transform.position.x, over.transform.position.y, -0.5f);
+                    foreach (JerryLogic.JerryNode node in logic.nodes)
+                    {
+                        if (node.height == n.height && node.type != n.type && node.column != n.column || node == n)
+                            node.gameobject.GetComponent<BoxAnimator>().animateLarge();
+                        else
+                            node.gameobject.GetComponent<BoxAnimator>().animateSmall();
+                    }
                 }
                 else
                 {
-                     this.currentPiece.transform.position = dragstartpoint;
+                    var hitTo = hit.transform.parent.gameObject;
+                    var from = mapGoToNode[currentPiece];
+                    var to = mapGoToNode[hitTo];
+                    if(from.height == to.height)
+                    {
+                        //Swap gameobjects
+                        var t = currentPiece.transform.position;
+                        currentPiece.transform.position = hitTo.transform.position;
+                        hitTo.transform.position = t;
+
+                        //Swap node types
+                        var tt = from.type;
+                        from.type = to.type;
+                        to.type = tt;
+
+                    }
+                    currentPiece = null;
+                    foreach (JerryLogic.JerryNode node in logic.nodes)
+                    {
+                        node.gameobject.GetComponent<BoxAnimator>().animateDefault();
+                    }
                 }
             }
-            else
-            {
-                this.currentPiece.transform.position = dragstartpoint;
-            }
-
-            for (int i = 0; i < logic.nodes.Count; i++)
-            {
-                var go = logic.nodes[i].gameobject;
-                SetLayerRecursively(go, (int)Mathf.Log(includeLayers.value,2));
-                go.GetComponent<BoxAnimator>().animateDefault();
-                go.transform.position = new Vector3(go.transform.position.x, go.transform.position.y, -0f);
-            }
-            
-            this.currentPiece = null;
+           
         }
         else if (phase == Phase.UPDATE && this.currentPiece != null)
         {
-            this.currentPiece.GetComponent<BoxAnimator>().animateLarge();
-            for (int i = 0; i < logic.nodes.Count; i++)
-            {
-                var go = logic.nodes[i].gameobject;
-                go.GetComponent<BoxAnimator>().animateSmall();
-                go.transform.position = new Vector3(go.transform.position.x, go.transform.position.y, -0f);
-            }
-            var over = checkHit(ray);
-            if(over != null)
-            {
-                over =over.transform.parent.gameObject;
-                var n = mapGoToNode[over];
-                if(n.height == mapGoToNode[currentPiece].height)
-                {
-                    over.GetComponent<BoxAnimator>().animateLarge();
-                    over.transform.position = new Vector3(over.transform.position.x, over.transform.position.y, -0.5f);
-                }
-            }
-            //Update positions and other such when touch/mouse is down.
-            currentPiece.GetComponent<BoxAnimator>().animateDefault();
-
-            var pos = this.currentPiece.transform.parent.InverseTransformPoint(worldPos.x, worldPos.y, -1);
-            //pos.x -= 1.4f;
-            //pos.y += 1.0f;
-            this.currentPiece.transform.position = pos;
+            
         }
     }
 
@@ -244,7 +186,7 @@ public class JerryManderin : MonoBehaviour {
         }
     }
 
-    private void SetLayerRecursively(GameObject obj ,int newLayer  )
+    private void SetLayerRecursively(GameObject obj, int newLayer)
     {
         obj.layer = newLayer;
 

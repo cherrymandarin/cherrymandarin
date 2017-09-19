@@ -11,6 +11,7 @@ public class JerryLogic : MonoBehaviour {
         public int type;
         public int height;
         public GameObject gameobject;
+        public int column;
     };
     
     public class JerryColumn
@@ -42,6 +43,7 @@ public class JerryLogic : MonoBehaviour {
                 //Create initial nodes.
                 var node = new JerryNode();
                 node.height = Random.Range(1, Mathf.Min(4,9-height));
+                node.column = i;
                 height += node.height;
                 node.type = nc % 3;
                 nc++;
