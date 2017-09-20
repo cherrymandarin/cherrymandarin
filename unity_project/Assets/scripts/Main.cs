@@ -61,12 +61,21 @@ public class Main : MonoBehaviour {
         cameraReverse = false;
     }
 
+    public static int score0;
+    public static int score1;
+    public static int score2;
+
+    private void toend()
+    {
+        Application.LoadLevel("End");
+    }
+
     public void moveToJerryManderin()
     {
         gamesplayed++;
         if(gamesplayed == 3)
         {
-            Application.LoadLevel("Splash");
+            Invoke("toend", 1f);
         }
         else
         {

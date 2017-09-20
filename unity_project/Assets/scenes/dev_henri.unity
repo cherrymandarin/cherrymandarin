@@ -852,6 +852,71 @@ Prefab:
       propertyPath: main
       value: 
       objectReference: {fileID: 17667333}
+    - target: {fileID: 114712362471685740, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: moves
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114712362471685740, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: cubemats.Array.data[0].r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114712362471685740, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: cubemats.Array.data[0].g
+      value: 0.6117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 114712362471685740, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: cubemats.Array.data[0].b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114712362471685740, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: cubemats.Array.data[0].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114712362471685740, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: cubemats.Array.data[1].r
+      value: 0.81960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 114712362471685740, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: cubemats.Array.data[1].g
+      value: 0.003921569
+      objectReference: {fileID: 0}
+    - target: {fileID: 114712362471685740, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: cubemats.Array.data[1].b
+      value: 0.19607843
+      objectReference: {fileID: 0}
+    - target: {fileID: 114712362471685740, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: cubemats.Array.data[1].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114712362471685740, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: cubemats.Array.data[2].r
+      value: 0.81960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 114712362471685740, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: cubemats.Array.data[2].g
+      value: 0.85882354
+      objectReference: {fileID: 0}
+    - target: {fileID: 114712362471685740, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: cubemats.Array.data[2].b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114712362471685740, guid: 851847df2e07efb4a858a175537b5ba5,
+        type: 2}
+      propertyPath: cubemats.Array.data[2].a
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 851847df2e07efb4a858a175537b5ba5, type: 2}
   m_IsPrefabParent: 0
@@ -1409,6 +1474,11 @@ Prefab:
       propertyPath: main
       value: 
       objectReference: {fileID: 17667333}
+    - target: {fileID: 114715614575185282, guid: 532c33d030cd1ab448d5340f01f998e3,
+        type: 2}
+      propertyPath: moves
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 532c33d030cd1ab448d5340f01f998e3, type: 2}
   m_IsPrefabParent: 0

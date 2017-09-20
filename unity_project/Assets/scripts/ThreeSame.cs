@@ -61,6 +61,11 @@ public class ThreeSame : MonoBehaviour {
         this.transform.Find("ui/score_0").GetComponent<TextMesh>().text = (logic.collected[2]+logic.collected[5])+"";
         this.transform.Find("ui/score_1").GetComponent<TextMesh>().text = (logic.collected[0] + logic.collected[4])+"";
         this.transform.Find("ui/score_2").GetComponent<TextMesh>().text =(logic.collected[1] + logic.collected[3])+"";
+
+        Main.score0 = logic.collected[2] + logic.collected[5];
+        Main.score1 = logic.collected[0] + logic.collected[4];
+        Main.score2 = logic.collected[1] + logic.collected[3];
+
         if (logic.movesLeft == 0)
         {
             if(!ended)

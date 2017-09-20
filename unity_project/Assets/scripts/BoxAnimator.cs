@@ -8,8 +8,8 @@ public class BoxAnimator : MonoBehaviour {
 
     private float size = 0.9f;
     private GameObject box;
-    private Color origCol;
-
+    public Color origCol;
+    public int type=0;
     private bool animatingInOut = false;
     private float ioStart = 0;
 

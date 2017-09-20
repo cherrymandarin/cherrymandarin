@@ -68,6 +68,11 @@ public class JerryManderin : MonoBehaviour
 			_audio = _audioManager.GetComponent<AudioSource> ();
 		}
     }
+    private void Awake()
+    {
+        foreach (Renderer c in movetext.GetComponentsInChildren<Renderer>()) c.enabled = false;
+
+    }
 
     // Update is called once per frame
     void Update()
@@ -115,7 +120,12 @@ public class JerryManderin : MonoBehaviour
 
     public void reset()
     {
+        foreach (GameObject key in mapGoToNode.Keys)
+        {
+            mapGoToNode[key].gameobject = key;
+        }
         this.logic.reset();
+        
         foreach( JerryLogic.JerryNode n in logic.nodes)
         {
             GameObject prefab = null;
@@ -127,13 +137,18 @@ public class JerryManderin : MonoBehaviour
                 prefab = neutral_group[n.height - 1];
 
             // n.gameobject.transform.GetChild(0).transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
-            n.gameobject.transform.Find("Cube").GetComponent<Renderer>().material = cubemats[n.type];
-            n.gameobject.transform.Find("Plane").GetComponent<Renderer>().materials[0] = facemats[n.type];
-
+//            var mats = n.gameobject.transform.Find("Cube").GetComponent<Renderer>().materials;
+  //          mats[0].color= cubemats[n.type].color;
+    //        n.gameobject.transform.Find("Cube").GetComponent<Renderer>().materials = mats;
+            n.gameobject.GetComponent<BoxAnimator>().origCol = cubemats[n.type];
+            var mats = n.gameobject.transform.Find("Plane").GetComponent<Renderer>().materials;
+            mats[0] = facemats[n.type];
+            n.gameobject.transform.Find("Plane").GetComponent<Renderer>().materials = mats;
+            n.gameobject.GetComponent<BoxAnimator>().type = n.type;
         }
     }
 
-    public List <Material> cubemats;
+    public List <Color> cubemats;
         public List<Material> facemats;
     void handleInteraction(Phase phase, Vector2 position)
     {
@@ -150,7 +165,7 @@ public class JerryManderin : MonoBehaviour
             {
                 startHit = hit.transform.parent.gameObject;
                 
-				_audio.PlayOneShot(_audioManager._audioClips[0]);
+                _audio.PlayOneShot(_audioManager._audioClips[0]);
 				//Debug.Log ("Played sound clip called Blub.");
 
                 if(startHit!=movetext)
@@ -208,9 +223,12 @@ public class JerryManderin : MonoBehaviour
                             mapGoToNode[currentPiece] = to;
                             mapGoToNode[hitTo] = from;
 
+                            to.gameobject = currentPiece;
+                            from.gameobject = hitTo;
+
                             Debug.Log("after swap " + from.type + " to " + to.type);
                             moves--;
-
+                            foreach (Renderer c in movetext.GetComponentsInChildren<Renderer>()) c.enabled = true;
                             //Animate from & to
                             from.gameobject.GetComponent<BoxAnimator>().animateOutIn(0.0f);
                             to.gameobject.GetComponent<BoxAnimator>().animateOutIn(0.0f);
