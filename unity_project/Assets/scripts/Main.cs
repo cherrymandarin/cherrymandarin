@@ -14,6 +14,9 @@ public class Main : MonoBehaviour {
     private bool cameraMoving = false;
     private bool cameraReverse = false;
 
+    private int gamesplayed = 0;
+
+    public Material active;
     // Use this for initialization
     void Start () {
 		
@@ -46,6 +49,8 @@ public class Main : MonoBehaviour {
             var tsui = threesame.transform.Find("ui").transform;
             threesame.transform.Find("ui").transform.localPosition = new Vector3(tsui.localPosition.x, 10f+op, tsui.localPosition.z);
         }
+        if(gamesplayed < 3)
+            this.transform.GetChild(gamesplayed).GetComponent<Renderer>().material = active;
     }
 
     public void moveToThreeSame(int lovePoints, int hatePoints, int neutralPoints, int draws)
@@ -58,9 +63,17 @@ public class Main : MonoBehaviour {
 
     public void moveToJerryManderin()
     {
-        jerrymandarin.GetComponent<JerryManderin>().reset();
-        cameraReverse =true;
-        cameraMoving = true;
-        cameraMoveStartTime = Time.time;
+        gamesplayed++;
+        if(gamesplayed == 3)
+        {
+            Application.LoadLevel("Splash");
+        }
+        else
+        {
+            jerrymandarin.GetComponent<JerryManderin>().reset();
+            cameraReverse = true;
+            cameraMoving = true;
+            cameraMoveStartTime = Time.time;
+        }
     }
 }
