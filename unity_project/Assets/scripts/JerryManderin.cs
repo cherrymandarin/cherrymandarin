@@ -28,6 +28,9 @@ public class JerryManderin : MonoBehaviour
     private GameObject startHit;
     private JerryLogic logic;
 
+	private AudioSource _audio;
+	private AudioManager _audioManager;
+
     // Use this for initialization
     void Start()
     {
@@ -59,6 +62,11 @@ public class JerryManderin : MonoBehaviour
                 mapGoToNode.Add(n.gameobject, n);
             }
         }
+
+		_audioManager = FindObjectOfType<AudioManager> ();
+		if (null != _audioManager) {
+			_audio = _audioManager.GetComponent<AudioSource> ();
+		}
     }
 
     // Update is called once per frame
@@ -142,6 +150,9 @@ public class JerryManderin : MonoBehaviour
             {
                 startHit = hit.transform.parent.gameObject;
                 
+				_audio.PlayOneShot(_audioManager._audioClips[0]);
+				//Debug.Log ("Played sound clip called Blub.");
+
                 if(startHit!=movetext)
                     startHit.GetComponent<BoxAnimator>().animateLarge();
             }
@@ -180,6 +191,8 @@ public class JerryManderin : MonoBehaviour
                         var from = mapGoToNode[currentPiece];
                         var to = mapGoToNode[hitTo];
                         Debug.Log("swap: " + from.type + " to " + to.type);
+						_audio.PlayOneShot(_audioManager._audioClips[2]);
+						//Debug.Log ("Played sound clip called LongWub.");
                         if (from.height == to.height && from != to && from.type != to.type && from.column != to.column)
                         {
                             //Swap gameobjects

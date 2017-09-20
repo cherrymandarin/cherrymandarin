@@ -23,6 +23,9 @@ public class JerryLogic : MonoBehaviour {
 
     public List<JerryColumn> columns;
     public List<JerryNode> nodes;
+
+	private AudioManager _audioManager;
+	private AudioSource _audio;
     
 	// Use this for initialization
 	void Start () {
@@ -51,6 +54,9 @@ public class JerryLogic : MonoBehaviour {
                 nodes.Add(node);
             }
         }
+
+		_audioManager = FindObjectOfType<AudioManager> ();
+		_audio = _audioManager.GetComponent<AudioSource> ();
 	}
     int rc = 0;
 	public void reset()
@@ -81,7 +87,10 @@ public class JerryLogic : MonoBehaviour {
 
             if(lovecount > hatecount && lovecount > neutralcount)
             {
-                c.winner = 0;
+				if (c.winner != 0) {
+					_audio.PlayOneShot (_audioManager._audioClips [4]);
+				}
+				c.winner = 0;
             }
             else if(hatecount > lovecount && hatecount > neutralcount)
             {
