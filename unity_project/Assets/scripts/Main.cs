@@ -31,11 +31,17 @@ public class Main : MonoBehaviour {
                 cameraMoving = false;
             }
             float pos = cameraMove.Evaluate(phase) * cameratarget;
+            float op = pos;
             if (cameraReverse)
                 pos = cameratarget - pos;
             Camera.main.transform.position = new Vector3(pos, 0f, -10f);
+
+            jerrymandarin.transform.Find("ui").transform.position = new Vector3(0f, op, 0f);
+            Debug.Log(10f - op);
+            var tsui = threesame.transform.Find("ui").transform;
+            //threesame.transform.Find("ui").transform.localPosition = new Vector3(tsui.localPosition.x, op, tsui.localPosition.z);
         }
-	}
+    }
 
     public void moveToThreeSame(int lovePoints, int hatePoints, int neutralPoints, int draws)
     {
