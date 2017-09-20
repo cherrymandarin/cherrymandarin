@@ -18,9 +18,14 @@ public class Main : MonoBehaviour {
     void Start () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    private void Awake()
+    {
+        var tsui = threesame.transform.Find("ui").transform;
+        threesame.transform.Find("ui").transform.localPosition = new Vector3(tsui.localPosition.x, 10f, tsui.localPosition.z);
+    }
+    // Update is called once per frame
+    void Update () {
 		if(cameraMoving)
         {
             float phase = Time.time - cameraMoveStartTime;
@@ -31,20 +36,21 @@ public class Main : MonoBehaviour {
                 cameraMoving = false;
             }
             float pos = cameraMove.Evaluate(phase) * cameratarget;
-            float op = pos;
+            
             if (cameraReverse)
                 pos = cameratarget - pos;
             Camera.main.transform.position = new Vector3(pos, 0f, -10f);
-
+            float op = pos;
             jerrymandarin.transform.Find("ui").transform.position = new Vector3(0f, op, 0f);
             Debug.Log(10f - op);
             var tsui = threesame.transform.Find("ui").transform;
-            //threesame.transform.Find("ui").transform.localPosition = new Vector3(tsui.localPosition.x, op, tsui.localPosition.z);
+            threesame.transform.Find("ui").transform.localPosition = new Vector3(tsui.localPosition.x, 10f+op, tsui.localPosition.z);
         }
     }
 
     public void moveToThreeSame(int lovePoints, int hatePoints, int neutralPoints, int draws)
     {
+        threesame.GetComponent<ThreeSame>().reset();
         cameraMoving = true;
         cameraMoveStartTime = Time.time;
         cameraReverse = false;
@@ -52,6 +58,7 @@ public class Main : MonoBehaviour {
 
     public void moveToJerryManderin()
     {
+        jerrymandarin.GetComponent<JerryManderin>().reset();
         cameraReverse =true;
         cameraMoving = true;
         cameraMoveStartTime = Time.time;

@@ -14,6 +14,7 @@ public class ThreeSameLogic : MonoBehaviour {
     public List<List<Node>> grid;
     public List<Node> nodes;
 
+    public List<int> collected;
     public int WIDTH = 8;
     public int HEIGHT = 8;
 
@@ -81,6 +82,8 @@ public class ThreeSameLogic : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
+        this.collected = new List<int>();
+        for (int i = 0; i < symbols.Count; i++) collected.Add(0);
         this.buildGrid();
         this.debugPrint();
         this.buildInitialConnections();
@@ -145,6 +148,7 @@ public class ThreeSameLogic : MonoBehaviour {
             for(int j = 0; j < HEIGHT;j++)
             {
                 var node = new Node();
+                
                 node.type = -1;
                 node.x = i;
                 node.y = j;
@@ -353,6 +357,8 @@ public class ThreeSameLogic : MonoBehaviour {
 	{
 		foreach (Node node in removed)
 		{
+            if(node.type != -1)
+                collected[node.type]++;
             node.type = -1;
 		}
         //Bubble the empty values up

@@ -3711,3 +3711,11 @@ MonoBehaviour:
   includeLayers:
     serializedVersion: 2
     m_Bits: 256
+  cubemats:
+  - {fileID: 2100000, guid: 865332675a7f91247b4b875d8913220e, type: 2}
+  - {fileID: 2100000, guid: 22c1d5a2b08161e41a743ac810328431, type: 2}
+  - {fileID: 2100000, guid: 47884c9f353d2854d869b2ee770e0020, type: 2}
+  facemats:
+  - {fileID: 2100000, guid: dfd338160695b8644856e588fb47f57a, type: 2}
+  - {fileID: 2100000, guid: 41a29559a31c5cf449afc8cce97b0ab9, type: 2}
+  - {fileID: 2100000, guid: 363af21d1c328dd40819a63d45b57db4, type: 2}

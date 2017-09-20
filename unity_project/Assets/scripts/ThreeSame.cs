@@ -44,9 +44,32 @@ public class ThreeSame : MonoBehaviour {
         }
         this.transform.position = new Vector3(-17f, -4f, 0f);
 	}
-    
-	// Update is called once per frame
-	void Update () {
+    private bool ended = false;
+    public void reset()
+    {
+        ended = false;
+        logic.movesLeft = logic.moves;
+    }
+    private void endround()
+    {
+        main.GetComponent<Main>().moveToJerryManderin();
+    }
+
+    // Update is called once per frame
+    void Update () {
+        this.transform.Find("ui/moves").GetComponent<TextMesh>().text = logic.movesLeft + "/" + logic.moves;
+        this.transform.Find("ui/score_0").GetComponent<TextMesh>().text = (logic.collected[2]+logic.collected[5])+"";
+        this.transform.Find("ui/score_1").GetComponent<TextMesh>().text = (logic.collected[0] + logic.collected[4])+"";
+        this.transform.Find("ui/score_2").GetComponent<TextMesh>().text =(logic.collected[1] + logic.collected[3])+"";
+        if (logic.movesLeft == 0)
+        {
+            if(!ended)
+            {
+                ended = true;
+                Invoke("endround", 1f);
+            }
+            return;
+        }
         //INTERACTIONS BELOW
         if (hadTouch && Input.touchCount == 0)
         {

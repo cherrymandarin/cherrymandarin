@@ -52,9 +52,18 @@ public class JerryLogic : MonoBehaviour {
             }
         }
 	}
-	
-	// Update is called once per frame
-	void Update () {
+    int rc = 0;
+	public void reset()
+    {
+        int i = 0;
+        foreach(JerryNode node in nodes)
+        {
+            node.type = (++i+rc) % 3;
+        }
+        rc++;
+   }
+    // Update is called once per frame
+    void Update () {
 		foreach(JerryColumn c in columns)
         {
             int lovecount = 0;

@@ -13,6 +13,7 @@ public class TSBox : MonoBehaviour
 
     private bool animatingInOut = false;
     private float ioStart = 0;
+    private float rnd = 0f;
 
     // Use this for initialization
     void Start()
@@ -22,6 +23,7 @@ public class TSBox : MonoBehaviour
 
     private void Awake()
     {
+        rnd = Random.value;
         box = this.transform.GetChild(0).gameObject;
         //origCol = this.transform.Find("Cube").GetComponent<Renderer>().material.color;
     }
@@ -46,9 +48,9 @@ public class TSBox : MonoBehaviour
         var mp = Mathf.Min(1, (size + 0.1f));
         mp *= mp;
 
-      //  this.transform.Find("Cube").GetComponent<Renderer>().material.color = new Color(origCol.r, origCol.g, origCol.b, 1f * mp * mp * mp);
-        float dance = Mathf.Max(0f, size - 0.9f);
-        this.transform.localRotation = Quaternion.Euler(Mathf.Sin(Time.time * 5f) * dance * 75f, Mathf.Sin(Time.time * 20f) * dance * 145f, Mathf.Sin(Time.time * 15f) * dance * 105f);
+        //  this.transform.Find("Cube").GetComponent<Renderer>().material.color = new Color(origCol.r, origCol.g, origCol.b, 1f * mp * mp * mp);
+        float dance =rnd* 0.02f+0.01f;// Mathf.Max(0f, size - 0.9f);
+        this.transform.localRotation = Quaternion.Euler(Mathf.Sin(Time.time * 1f + rnd) * dance * 75f, Mathf.Sin(Time.time * 2f+rnd) * dance * 145f, Mathf.Sin(Time.time * 1f + rnd) * dance * 105f);
     }
     public void animateDefault()
     {

@@ -105,6 +105,28 @@ public class JerryManderin : MonoBehaviour
 
     }
 
+    public void reset()
+    {
+        this.logic.reset();
+        foreach( JerryLogic.JerryNode n in logic.nodes)
+        {
+            GameObject prefab = null;
+            if (n.type == 0)
+                prefab = love_group[n.height - 1];
+            else if (n.type == 1)
+                prefab = hate_group[n.height - 1];
+            else
+                prefab = neutral_group[n.height - 1];
+
+            // n.gameobject.transform.GetChild(0).transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+            n.gameobject.transform.Find("Cube").GetComponent<Renderer>().material = cubemats[n.type];
+            n.gameobject.transform.Find("Plane").GetComponent<Renderer>().materials[0] = facemats[n.type];
+
+        }
+    }
+
+    public List <Material> cubemats;
+        public List<Material> facemats;
     void handleInteraction(Phase phase, Vector2 position)
     {
         var ray = Camera.main.ScreenPointToRay(new Vector3(position.x, position.y));
