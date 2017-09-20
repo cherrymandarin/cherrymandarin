@@ -11,6 +11,7 @@ public class ThreeSame : MonoBehaviour {
     private Vector2 dragstartpoint;
     public LayerMask includeLayers;
     public LayerMask draggingLayer;
+    private Vector2 dragStartScreen;
 
     public GameObject mainNode;
 
@@ -21,11 +22,12 @@ public class ThreeSame : MonoBehaviour {
 
     private bool hadTouch = false;
 
-    private List<ThreeSameLogic.Node> removing;
+    private List<List<ThreeSameLogic.Node>> removing;
 
     // Use this for initialization
     void Start ()
     {
+        removing = new List<List<ThreeSameLogic.Node>>();
         this.mapGoToNode = new Dictionary<GameObject, ThreeSameLogic.Node>();
         this.logic = this.GetComponent<ThreeSameLogic>();
         foreach(ThreeSameLogic.Node node in logic.nodes)
@@ -94,8 +96,8 @@ public class ThreeSame : MonoBehaviour {
 
     void handleInteraction(Phase phase, Vector2 position)
     {
-        float dx = this.mouseDownBegin.x - position.x;
-        float dy = this.mouseDownBegin.y - position.y;
+        float dx = position.x-this.mouseDownBegin.x;
+        float dy = position.y-this.mouseDownBegin.y;
         var ray = Camera.main.ScreenPointToRay(new Vector3(position.x, position.y));
         var worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, 0));
         //TODO - should this be calculated based on screen resolution instead of absolute?
@@ -113,7 +115,8 @@ public class ThreeSame : MonoBehaviour {
             if (hit != null)
             {
                 this.currentPiece = checkHit(ray).transform.parent.parent.gameObject;
-                SetLayerRecursively(this.currentPiece, (int)Mathf.Log(draggingLayer.value, 2));
+                Debug.Log("currnet: " + currentPiece);
+             //   SetLayerRecursively(this.currentPiece, (int)Mathf.Log(draggingLayer.value, 2));
                 dragstartpoint = currentPiece.transform.position;
                 currentPiece.transform.position = new Vector3(dragstartpoint.x, dragstartpoint.y, -1);
             }
@@ -121,38 +124,74 @@ public class ThreeSame : MonoBehaviour {
         else if (phase == Phase.END && this.currentPiece != null)
         {
             //swap pieces if possible.
-            var over = checkHit(ray);
+            GameObject over = null;// checkHit(ray);
+            var cur = mapGoToNode[currentPiece];
+            ThreeSameLogic.Node n = null;
+            Debug.Log("DELTAS " + dx + "," + dy);
+            if (Mathf.Abs(dx) > 10 || Mathf.Abs(dy) >10)
+            {
+
+                //   over = over.transform.parent.parent.gameObject;
+                if (Mathf.Abs(dx) > Mathf.Abs(dy))
+                {
+                    if (dx < 0 && cur.x > 0)
+                    {
+                        n = logic.grid[cur.x - 1][cur.y];
+                        over = n.go;
+                    }
+                    else if (dx > 0 && cur.x < logic.WIDTH - 1)
+                    {
+                        n = logic.grid[cur.x + 1][cur.y];
+                        over = n.go;
+                    }
+                }
+                else
+                {
+                    if (dy > 0 && cur.y > 0)
+                    {
+                        n = logic.grid[cur.x][cur.y - 1];
+                        over = n.go;
+                    }
+                    else if (dy < 0 && cur.y < logic.HEIGHT - 1)
+                    {
+                        n = logic.grid[cur.x][cur.y + 1];
+                        over = n.go;
+                    }
+                }
+
+            }
+            Debug.Log("hit found: " + over);
             if (over != null)
             {
-                over = over.transform.parent.parent.gameObject;
-                var n = mapGoToNode[over];
-                var cur = mapGoToNode[currentPiece];
-
-                int distance = (int)(Mathf.Abs(n.x - cur.x) + Mathf.Abs(n.y-cur.y));
+                
+                int distance = (int)(Mathf.Abs(n.x - cur.x) + Mathf.Abs(n.y - cur.y));
                 if (distance == 1)
                 {
-                    removing = logic.swap(n, cur);
-                    main.GetComponent<Main>().moveToJerryManderin();
-                    //todo -animate
-                    //update gos
-                    updatenode(n);
-                    updatenode(cur);
-
-                    logic.remove(removing);
-
-                    while(true)
+                    var remove = logic.swap(n, cur);
+                    if (remove.Count > 0)
                     {
-                        removing =logic.spawn();
-                        if (removing.Count == 0)
-                            break;
-                        logic.remove(removing);
+                        removing.Add(remove);
+                        //Ok
+                        n.go.GetComponent<TSBox>().animateOutIn(0f);
+                        cur.go.GetComponent<TSBox>().animateOutIn(0f);
+                        updatenode(n);
+                        updatenode(cur);
+
+                        logic.remove(remove);
+
+                        Invoke("popRemove", 0.2f);
                     }
-                    foreach (ThreeSameLogic.Node nod in logic.nodes) updatenode(nod);
+                    else
+                    {
+                        //Animate error
+                    }
                 }
+
                 else
                 {
                     this.currentPiece.transform.position = dragstartpoint;
                 }
+            
             }
             else
             {
@@ -164,11 +203,33 @@ public class ThreeSame : MonoBehaviour {
         {
             //todo suggest move soon to happen
         }
+        
+    }
+
+    private void popRemove()
+    {
+        Debug.Log("pop remove");
+        var remove = removing[0];
+        removing.RemoveAt(0);
+        
+        var nextRemove = logic.spawn();
+        logic.remove(nextRemove);
+        foreach (ThreeSameLogic.Node nod in remove)
+        {
+            updatenode(nod);
+            nod.go.GetComponent<TSBox>().animateOutIn(0f);
+        }
+        if (nextRemove.Count > 0)
+        {
+            removing.Add(nextRemove);
+            Invoke("popRemove", 0.2f);
+        }
     }
 
     private void updatenode(ThreeSameLogic.Node node)
     {
         var go = node.go;
+        if (node.type == -1) return;
         foreach (Renderer r in go.transform.GetChild(0).GetComponentsInChildren<Renderer>()) r.enabled = false;
         foreach (Renderer r in go.transform.GetChild(1).GetComponentsInChildren<Renderer>()) r.enabled = false;
         foreach (Renderer r in go.transform.GetChild(2).GetComponentsInChildren<Renderer>()) r.enabled = false;

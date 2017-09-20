@@ -144,7 +144,9 @@ public class JerryManderin : MonoBehaviour
                         Debug.Log("selected: " + n.type);
                         foreach (JerryLogic.JerryNode node in logic.nodes)
                         {
-                            if (node.height == n.height && node.type != n.type && node.column != n.column || node == n)
+                            if(node == n)
+                                node.gameobject.GetComponent<BoxAnimator>().animateExtraLarge();
+                            else if (node.height == n.height && node.type != n.type && node.column != n.column || node == n)
                                 node.gameobject.GetComponent<BoxAnimator>().animateLarge();
                             else
                                 node.gameobject.GetComponent<BoxAnimator>().animateSmall();

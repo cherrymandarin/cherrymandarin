@@ -39,7 +39,6 @@ public class Main : MonoBehaviour {
 
     public void moveToThreeSame(int lovePoints, int hatePoints, int neutralPoints, int draws)
     {
-        Debug.Log("moooove");
         cameraMoving = true;
         cameraMoveStartTime = Time.time;
         cameraReverse = false;

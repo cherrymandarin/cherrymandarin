@@ -356,6 +356,8 @@ public class ThreeSameLogic : MonoBehaviour {
             node.type = -1;
 		}
         //Bubble the empty values up
+
+        /*
         removed.Sort((a, b) => { return a.x - b.y; });
 		foreach (Node node in removed)
 		{
@@ -370,7 +372,7 @@ public class ThreeSameLogic : MonoBehaviour {
                 next.type = t;
                 n = next;
             }
-		}
+		}*/
 	}
 	
     public void resetGrid()
