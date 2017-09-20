@@ -19,6 +19,8 @@ public class ThreeSame : MonoBehaviour {
 
     private bool hadTouch = false;
 
+    private List<ThreeSameLogic.Node> removing;
+
     // Use this for initialization
     void Start ()
     {
@@ -26,7 +28,7 @@ public class ThreeSame : MonoBehaviour {
         this.logic = this.GetComponent<ThreeSameLogic>();
         foreach(ThreeSameLogic.Node node in logic.nodes)
         {
-            var go = Instantiate(mainNode, new Vector3(node.x*1.1f, node.y*1.1f, 0f), Quaternion.identity, this.transform);
+            var go = Instantiate(mainNode, new Vector3(node.x*1.1f,7f*1.1f- node.y*1.1f, 0f), Quaternion.identity, this.transform);
             for(int i = 0; i < go.transform.childCount; i++)
             {
                 var rndr = go.transform.GetChild(i).GetComponentsInChildren<Renderer>();
@@ -36,7 +38,7 @@ public class ThreeSame : MonoBehaviour {
             foreach(Renderer r in go.transform.GetChild(node.type).GetComponentsInChildren<Renderer>())r.enabled = true;
             mapGoToNode.Add(go, node);
         }
-        this.transform.position = new Vector3(-7f, -4f, 0f);
+        this.transform.position = new Vector3(-17f, -4f, 0f);
 	}
     
 	// Update is called once per frame
@@ -127,30 +129,23 @@ public class ThreeSame : MonoBehaviour {
                 int distance = (int)(Mathf.Abs(n.x - cur.x) + Mathf.Abs(n.y-cur.y));
                 if (distance == 1)
                 {
-                    //Swap node types
-                    var tt = cur.type;
-                    cur.type = n.type;
-                    n.type = tt;
+                    removing = logic.swap(n, cur);
 
+                    //todo -animate
                     //update gos
-                    GameObject go = n.go;
-                    foreach (Renderer r in go.transform.GetChild(0).GetComponentsInChildren<Renderer>()) r.enabled = false;
-                    foreach (Renderer r in go.transform.GetChild(1).GetComponentsInChildren<Renderer>()) r.enabled = false;
-                    foreach (Renderer r in go.transform.GetChild(2).GetComponentsInChildren<Renderer>()) r.enabled = false;
-                    foreach (Renderer r in go.transform.GetChild(3).GetComponentsInChildren<Renderer>()) r.enabled = false;
-                    foreach (Renderer r in go.transform.GetChild(4).GetComponentsInChildren<Renderer>()) r.enabled = false;
-                    foreach (Renderer r in go.transform.GetChild(5).GetComponentsInChildren<Renderer>()) r.enabled = false;
-                    foreach (Renderer r in go.transform.GetChild(n.type).GetComponentsInChildren<Renderer>()) r.enabled = true;
-                    //TODO
-                    go = cur.go;
-                    foreach (Renderer r in go.transform.GetChild(0).GetComponentsInChildren<Renderer>()) r.enabled = false;
-                    foreach (Renderer r in go.transform.GetChild(1).GetComponentsInChildren<Renderer>()) r.enabled = false;
-                    foreach (Renderer r in go.transform.GetChild(2).GetComponentsInChildren<Renderer>()) r.enabled = false;
-                    foreach (Renderer r in go.transform.GetChild(3).GetComponentsInChildren<Renderer>()) r.enabled = false;
-                    foreach (Renderer r in go.transform.GetChild(4).GetComponentsInChildren<Renderer>()) r.enabled = false;
-                    foreach (Renderer r in go.transform.GetChild(5).GetComponentsInChildren<Renderer>()) r.enabled = false;
-                    foreach (Renderer r in go.transform.GetChild(cur.type).GetComponentsInChildren<Renderer>()) r.enabled = true;
+                    updatenode(n);
+                    updatenode(cur);
 
+                    logic.remove(removing);
+
+                    while(true)
+                    {
+                        removing =logic.spawn();
+                        if (removing.Count == 0)
+                            break;
+                        logic.remove(removing);
+                    }
+                    foreach (ThreeSameLogic.Node nod in logic.nodes) updatenode(nod);
                 }
                 else
                 {
@@ -167,6 +162,19 @@ public class ThreeSame : MonoBehaviour {
         {
             //todo suggest move soon to happen
         }
+    }
+
+    private void updatenode(ThreeSameLogic.Node node)
+    {
+        var go = node.go;
+        foreach (Renderer r in go.transform.GetChild(0).GetComponentsInChildren<Renderer>()) r.enabled = false;
+        foreach (Renderer r in go.transform.GetChild(1).GetComponentsInChildren<Renderer>()) r.enabled = false;
+        foreach (Renderer r in go.transform.GetChild(2).GetComponentsInChildren<Renderer>()) r.enabled = false;
+        foreach (Renderer r in go.transform.GetChild(3).GetComponentsInChildren<Renderer>()) r.enabled = false;
+        foreach (Renderer r in go.transform.GetChild(4).GetComponentsInChildren<Renderer>()) r.enabled = false;
+        foreach (Renderer r in go.transform.GetChild(5).GetComponentsInChildren<Renderer>()) r.enabled = false;
+        foreach (Renderer r in go.transform.GetChild(node.type).GetComponentsInChildren<Renderer>()) r.enabled = true;
+
     }
 
     GameObject checkHit(Ray ray)

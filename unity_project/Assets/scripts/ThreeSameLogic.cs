@@ -359,15 +359,16 @@ public class ThreeSameLogic : MonoBehaviour {
         removed.Sort((a, b) => { return a.x - b.y; });
 		foreach (Node node in removed)
 		{
+            Node n = node;
 			while (true)
 			{
-				if (node.y == 0) break;
+				if (n.y == 0) break;
 				
-				Node next = this.grid[node.x][node.y - 1];
-                int t = node.type;
-                node.type = next.type;
+				Node next = this.grid[n.x][n.y - 1];
+                int t = n.type;
+                n.type = next.type;
                 next.type = t;
-                next = node;
+                n = next;
             }
 		}
 	}
