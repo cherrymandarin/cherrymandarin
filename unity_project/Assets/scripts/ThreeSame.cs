@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ThreeSame : MonoBehaviour {
-    
+
+    public GameObject main;
+
     private ThreeSameLogic logic;
 
     private Vector2 dragstartpoint;
@@ -130,7 +132,7 @@ public class ThreeSame : MonoBehaviour {
                 if (distance == 1)
                 {
                     removing = logic.swap(n, cur);
-
+                    main.GetComponent<Main>().moveToJerryManderin();
                     //todo -animate
                     //update gos
                     updatenode(n);

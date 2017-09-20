@@ -6,6 +6,8 @@ public class JerryManderin : MonoBehaviour
 {
     public int moves = 10;
 
+    public GameObject main;
+
     public GameObject movetext;
 
     public List<GameObject> love_group;
@@ -117,68 +119,75 @@ public class JerryManderin : MonoBehaviour
             if (hit != null)
             {
                 startHit = hit.transform.parent.gameObject;
-                startHit.GetComponent<BoxAnimator>().animateLarge();
+                
+                if(startHit!=movetext)
+                    startHit.GetComponent<BoxAnimator>().animateLarge();
             }
         }
         else if (phase == Phase.END)
         {
             //Fetch the piece being hit.
             var hit = checkHit(ray);
-
-            if (hit != null && hit.transform.parent.gameObject == startHit)
+            if (hit != null && startHit == movetext && hit.transform.parent.gameObject == startHit)
             {
-                
-                if (currentPiece == null)
+                main.GetComponent<Main>().moveToThreeSame(3, 3, 3, 3);
+            }
+            else
+            {
+                if (hit != null && hit.transform.parent.gameObject == startHit)
                 {
-                    this.currentPiece = hit.transform.parent.gameObject;
-                    var n = mapGoToNode[this.currentPiece];
-                    Debug.Log("selected: " + n.type);
-                    foreach (JerryLogic.JerryNode node in logic.nodes)
+
+                    if (currentPiece == null)
                     {
-                        if (node.height == n.height && node.type != n.type && node.column != n.column || node == n)
-                            node.gameobject.GetComponent<BoxAnimator>().animateLarge();
-                        else
-                            node.gameobject.GetComponent<BoxAnimator>().animateSmall();
+                        this.currentPiece = hit.transform.parent.gameObject;
+                        var n = mapGoToNode[this.currentPiece];
+                        Debug.Log("selected: " + n.type);
+                        foreach (JerryLogic.JerryNode node in logic.nodes)
+                        {
+                            if (node.height == n.height && node.type != n.type && node.column != n.column || node == n)
+                                node.gameobject.GetComponent<BoxAnimator>().animateLarge();
+                            else
+                                node.gameobject.GetComponent<BoxAnimator>().animateSmall();
+                        }
                     }
-                }
-                else
-                {
-                    var hitTo = hit.transform.parent.gameObject;
-                    var from = mapGoToNode[currentPiece];
-                    var to = mapGoToNode[hitTo];
-                    Debug.Log("swap: " + from.type + " to " + to.type);
-                    if(from.height == to.height && from != to && from.type != to.type && from.column != to.column)
+                    else
                     {
-                        //Swap gameobjects
-                        var t = currentPiece.transform.position;
-                        currentPiece.transform.position = hitTo.transform.position;
-                        hitTo.transform.position = t;
+                        var hitTo = hit.transform.parent.gameObject;
+                        var from = mapGoToNode[currentPiece];
+                        var to = mapGoToNode[hitTo];
+                        Debug.Log("swap: " + from.type + " to " + to.type);
+                        if (from.height == to.height && from != to && from.type != to.type && from.column != to.column)
+                        {
+                            //Swap gameobjects
+                            var t = currentPiece.transform.position;
+                            currentPiece.transform.position = hitTo.transform.position;
+                            hitTo.transform.position = t;
 
-                        //Swap node types
-                        var tt = from.type;
-                        from.type = to.type;
-                        to.type = tt;
+                            //Swap node types
+                            var tt = from.type;
+                            from.type = to.type;
+                            to.type = tt;
 
-                        mapGoToNode[currentPiece] = to;
-                        mapGoToNode[hitTo] = from;
+                            mapGoToNode[currentPiece] = to;
+                            mapGoToNode[hitTo] = from;
 
-                        Debug.Log("after swap " + from.type + " to " + to.type);
-                        moves--;
-                        
-                        //Animate from & to
-                        from.gameobject.GetComponent<BoxAnimator>().animateOutIn(0.0f);
-                        to.gameobject.GetComponent<BoxAnimator>().animateOutIn(0.0f);
+                            Debug.Log("after swap " + from.type + " to " + to.type);
+                            moves--;
+
+                            //Animate from & to
+                            from.gameobject.GetComponent<BoxAnimator>().animateOutIn(0.0f);
+                            to.gameobject.GetComponent<BoxAnimator>().animateOutIn(0.0f);
+                        }
+                        currentPiece = null;
+                        foreach (JerryLogic.JerryNode node in logic.nodes)
+                        {
+                            node.gameobject.GetComponent<BoxAnimator>().animateDefault();
+                        }
+
+
                     }
-                    currentPiece = null;
-                    foreach (JerryLogic.JerryNode node in logic.nodes)
-                    {
-                        node.gameobject.GetComponent<BoxAnimator>().animateDefault();
-                    }
-
-                   
                 }
             }
-           
         }
         else if (phase == Phase.UPDATE && this.currentPiece != null)
         {
